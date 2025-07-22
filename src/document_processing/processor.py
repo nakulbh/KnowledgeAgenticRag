@@ -2,8 +2,8 @@
 
 import os
 from typing import List, Dict, Any, Union
-from .pdf_processor import process_pdf_document, process_multiple_pdfs
-from .notebook_processor import process_notebook_document, process_multiple_notebooks
+from document_processing.pdf_processor import process_pdf_document, process_multiple_pdfs
+from document_processing.notebook_processor import process_notebook_document, process_multiple_notebooks
 
 
 def process_single_document(file_path: str, chunk_size: int = 1000, chunk_overlap: int = 200) -> List[Dict[str, Any]]:

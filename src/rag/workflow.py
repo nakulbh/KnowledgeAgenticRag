@@ -7,7 +7,7 @@ from langgraph.checkpoint.memory import MemorySaver
 from langchain.chat_models import init_chat_model
 from langchain_core.messages import convert_to_messages
 from pydantic import BaseModel, Field
-from ..retrieval.retriever import create_retriever_tool_for_rag
+from retrieval.retriever import create_retriever_tool_for_rag
 
 
 # Pydantic model for document grading
@@ -169,23 +169,37 @@ def run_rag_query(
     thread_id: str = "default_thread"
 ) -> str:
     """Run a single query through the RAG workflow.
-    
+
     Args:
         graph: Compiled LangGraph workflow
         query: User query
         thread_id: Thread ID for conversation history
-        
+
     Returns:
         Response from the RAG system
     """
-    config = {"configurable": {"thread_id": thread_id}}
-    
+    import os
+
+    # Set up tracing metadata
+    config = {
+        "configurable": {"thread_id": thread_id},
+        "metadata": {
+            "user_query": query,
+            "thread_id": thread_id,
+            "workflow_type": "agentic_rag"
+        }
+    }
+
+    # Add run name for better tracing
+    if os.getenv("LANGCHAIN_TRACING_V2") == "true":
+        config["run_name"] = f"RAG_Query_{thread_id}"
+
     # Run the workflow
     result = graph.invoke(
         {"messages": [{"role": "user", "content": query}]},
         config=config
     )
-    
+
     # Extract the final response
     final_message = result["messages"][-1]
     return final_message.content

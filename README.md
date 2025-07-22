@@ -69,3 +69,80 @@ The app will be available at `http://localhost:8501`
 3. **Process Documents**: Click "Process and Add Documents" to extract text, create chunks, and store in ChromaDB
 
 4. **Chat**: Ask questions about your documents in the chat interface
+
+### Programmatic Usage
+
+```python
+from src.document_processing.processor import process_single_document
+from src.retrieval.chroma_client import add_documents_to_chroma
+from src.rag.workflow import create_rag_workflow, run_rag_query
+
+# Process a document
+documents = process_single_document("path/to/document.pdf")
+
+# Add to ChromaDB
+add_documents_to_chroma(documents)
+
+# Create RAG workflow
+workflow = create_rag_workflow()
+
+# Query the system
+response = run_rag_query(workflow, "What is this document about?")
+print(response)
+```
+
+## Configuration
+
+### Environment Variables
+
+- `OPENAI_API_KEY`: Your OpenAI API key
+- `CHROMA_HOST`: ChromaDB host (default: localhost)
+- `CHROMA_PORT`: ChromaDB port (default: 8000)
+- `DEFAULT_MODEL`: Default chat model (default: openai:gpt-4o-mini)
+- `DEFAULT_TEMPERATURE`: Model temperature (default: 0.0)
+- `DEFAULT_CHUNK_SIZE`: Document chunk size (default: 1000)
+- `DEFAULT_CHUNK_OVERLAP`: Chunk overlap (default: 200)
+
+### Supported File Types
+
+- PDF files (.pdf)
+- Jupyter notebooks (.ipynb)
+
+## Project Structure
+
+```
+resourceAgregationRag/
+├── src/
+│   ├── document_processing/    # Document processing functions
+│   ├── retrieval/             # ChromaDB integration
+│   ├── rag/                   # LangGraph workflow
+│   ├── chat/                  # Streamlit interface
+│   └── utils/                 # Utility functions
+├── config/                    # Configuration files
+├── data/                      # Data directories
+├── docs/                      # Documentation
+├── tests/                     # Test files
+├── app.py                     # Main application entry point
+├── pyproject.toml            # Project configuration
+└── README.md                 # This file
+```
+
+## Troubleshooting
+
+### ChromaDB Connection Issues
+
+- Ensure ChromaDB container is running on the correct port
+- Check firewall settings
+- Verify host and port configuration
+
+### Document Processing Issues
+
+- Ensure uploaded files are valid PDFs or Jupyter notebooks
+- Check file permissions
+- Verify sufficient disk space for temporary files
+
+### Model Issues
+
+- Verify OpenAI API key is set correctly
+- Check API quota and billing
+- Ensure model name is correct

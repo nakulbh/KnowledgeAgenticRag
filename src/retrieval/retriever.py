@@ -3,7 +3,7 @@
 from typing import List, Dict, Any, Optional
 from langchain.tools.retriever import create_retriever_tool
 from langchain_core.tools import Tool
-from .chroma_client import search_documents
+from retrieval.chroma_client import search_documents
 from langchain_openai import OpenAIEmbeddings
 
 

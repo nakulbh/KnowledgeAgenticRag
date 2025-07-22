@@ -2,10 +2,17 @@
 
 import streamlit as st
 import os
+import sys
+from pathlib import Path
 from typing import List
-from ..document_processing.processor import process_uploaded_files
-from ..retrieval.chroma_client import add_documents_to_chroma, get_collection_info, clear_collection
-from ..rag.workflow import create_rag_workflow, run_rag_query
+
+# Add src to Python path
+src_path = Path(__file__).parent.parent
+sys.path.insert(0, str(src_path))
+
+from document_processing.processor import process_uploaded_files
+from retrieval.chroma_client import add_documents_to_chroma, get_collection_info, clear_collection
+from rag.workflow import create_rag_workflow, run_rag_query
 
 
 def initialize_session_state():
